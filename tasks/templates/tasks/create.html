@@ -1,0 +1,20 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <title>Create a new task</title>
+</head>
+<body>
+    <main>
+        <div>
+            <h1>Create a new task</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button>Create</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
