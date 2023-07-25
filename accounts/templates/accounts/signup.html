@@ -6,6 +6,20 @@
     <title>Signup</title>
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a style="text-decoration:none;" href="{% url 'show_my_tasks' %}">|| My tasks ||</a></li>
+                    <li><a style="text-decoration:none;" href="{% url 'list_projects' %}">|| My projects ||</a></li>
+                    <li><a style="text-decoration:none;" href="{% url 'logout' %}">|| Logout ||</a></li>
+                {% else %}
+                    <li><a style="text-decoration:none;" href="{% url 'login' %}">|| Login ||</a></li>
+                    <li><a style="text-decoration:none;" href="{% url 'signup' %}">|| Signup ||</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
     <main>
         <div>
             <h1>Signup</h1>
