@@ -1,54 +1,66 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
-<head>
-    <title>{{ project.name }}</title>
-</head>
-
-<body>
-    <header>
-        <nav>
-            <ul>
-                {% if user.is_authenticated %}
-                    <li><a style="text-decoration:none;" href="{% url 'show_my_tasks' %}">|| My tasks ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'list_projects' %}">|| My projects ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'logout' %}">|| Logout ||</a></li>
+    <head>
+        <title>{{ project.name }}</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'show_my_tasks' %}">|| My tasks ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'list_projects' %}">|| My projects ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'logout' %}">|| Logout ||</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'login' %}">|| Login ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'signup' %}">|| Signup ||</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div>
+                <h1>{{ project.name }}</h1>
+                <p>{{ project.description }}</p>
+                <h2>Tasks</h2>
+                <p>
+                    <a href="{% url 'create_task' %}">Create a new task</a>
+                </p>
+                {% if project.tasks.all %}
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Assignee</th>
+                            <th>Start date</th>
+                            <th>Due date</th>
+                            <th>Is completed</th>
+                        </tr>
+                        {% for task in project.tasks.all %}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.assignee }}</td>
+                                <td>{{ task.start_date }}</td>
+                                <td>{{ task.due_date }}</td>
+                                <td>{{ task.is_completed|yesno:"yes,no" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 {% else %}
-                    <li><a style="text-decoration:none;" href="{% url 'login' %}">|| Login ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'signup' %}">|| Signup ||</a></li>
+                    <p>This project has no tasks</p>
                 {% endif %}
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div>
-            <h1>{{ project.name }}</h1>
-            <p>{{ project.description }}</p>
-            <h2>Tasks</h2>
-            <p><a href="{% url 'create_task' %}">Create a new task</a></p>
-            {% if project.tasks.all %}
-            <table>
-                <tr>
-                    <th>Name </th>
-                    <th>Assignee</th>
-                    <th>Start date</th>
-                    <th>Due date</th>
-                    <th>Is completed</th>
-                </tr>
-                {% for task in project.tasks.all %}
-                <tr>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.assignee }}</td>
-                    <td>{{ task.start_date }}</td>
-                    <td>{{ task.due_date }}</td>
-                    <td>{{ task.is_completed|yesno:"yes,no" }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            {% else %}
-            <p>This project has no tasks</p>
-            {% endif %}
-        </div>
-    </main>
-</body>
+            </div>
+        </main>
+    </body>
 </html>

@@ -1,50 +1,59 @@
 {% load static %}
-<!doctype html>
+
+<!DOCTYPE html>
 <html>
-
-<head>
-    <title>My Tasks</title>
-</head>
-
-<body>
-    <header>
-        <nav>
-            <ul>
-                {% if user.is_authenticated %}
-                <li><a style="text-decoration:none;" href="{% url 'show_my_tasks' %}">|| My tasks ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'list_projects' %}">|| My projects ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'logout' %}">|| Logout ||</a></li>
+    <head>
+        <title>My Tasks</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'show_my_tasks' %}">|| My tasks ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'list_projects' %}">|| My projects ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'logout' %}">|| Logout ||</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'login' %}">|| Login ||</a>
+                        </li>
+                        <li>
+                            <a style="text-decoration:none;" href="{% url 'signup' %}">|| Signup ||</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div>
+                <h1>My Tasks</h1>
+                {% if tasks %}
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Start date</th>
+                            <th>Due date</th>
+                            <th>Is completed</th>
+                        </tr>
+                        {% for task in tasks %}
+                            <tr>
+                                <td>{{ task.name }}</td>
+                                <td>{{ task.start_date }}</td>
+                                <td>{{ task.due_date }}</td>
+                                <td>{{ task.is_completed|yesno:"yes,no" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 {% else %}
-                    <li><a style="text-decoration:none;" href="{% url 'login' %}">|| Login ||</a></li>
-                    <li><a style="text-decoration:none;" href="{% url 'signup' %}">|| Signup ||</a></li>
+                    <p>You have no tasks</p>
                 {% endif %}
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <div>
-            <h1>My Tasks</h1>
-            {% if tasks %}
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Start date</th>
-                        <th>Due date</th>
-                        <th>Is completed</th>
-                    </tr>
-                    {% for task in tasks %}
-                    <tr>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.start_date }}</td>
-                        <td>{{ task.due_date }}</td>
-                        <td>{{ task.is_completed|yesno:"yes,no" }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            {% else %}
-                <p>You have no tasks</p>
-            {% endif %}
-        </div>
-    </main>
-</body>
+            </div>
+        </main>
+    </body>
 </html>
